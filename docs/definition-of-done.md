@@ -1,0 +1,1 @@
+# Tähän yhteiset valmistumisen ehdot
