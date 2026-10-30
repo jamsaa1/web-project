@@ -1,11 +1,24 @@
--- Database is automatically created from POSTGRES_DB environment variable
--- No need to create database manually since PostgreSQL container handles this
+\set ON_ERROR_STOP on
 
-DROP TABLE IF EXISTS test;
+BEGIN;
 
-CREATE TABLE test (
+CREATE TABLE IF NOT EXISTS public.test (
     id SERIAL PRIMARY KEY,
     description TEXT
 );
 
-INSERT INTO test (description) VALUES ('bar'), ('baz'), ('qux')
+INSERT INTO
+    public.test (description)
+SELECT value
+FROM (
+        VALUES ('bar'), ('baz'), ('qux')
+    ) AS seed (value)
+WHERE
+    NOT EXISTS (
+        SELECT 1
+        FROM public.test
+    );
+
+COMMIT;
+
+\ir migrations/001_movie_core.sql
