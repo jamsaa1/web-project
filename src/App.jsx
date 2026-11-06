@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 import MovieSearch from "./components/MovieSearch";
+import AdvancedSearch from "./components/AdvancedSearch";
 
 function App() {
   const [data, setData] = useState([]);
@@ -31,6 +32,7 @@ function App() {
       <h1>Docker Sample</h1>
       <h2>Find your next favorite movie</h2>
       <MovieSearch />
+      <AdvancedSearch />
       <div className="card">
         {loading && <p>Loading...</p>}
 
