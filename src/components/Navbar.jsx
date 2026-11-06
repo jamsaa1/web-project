@@ -22,12 +22,12 @@ function Navbar() {
           Koti
         </a>
 
-        <a href="/groups" className="nav-link">
+        <a href="/ryhmat" className="nav-link">
           <img src={chatIcon} alt="" />
           Ryhmät
         </a>
 
-        <a href="/movies" className="nav-link">
+        <a href="/elokuvat" className="nav-link">
         <img src={filmIcon} alt="" />
           Elokuvat
         </a>
