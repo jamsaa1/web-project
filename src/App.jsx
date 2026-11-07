@@ -1,6 +1,8 @@
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import GroupHero from './components/GroupHero'
 import MovieSearch from './components/MovieSearch'
+import RecommendedMovies from './components/RecommendedMovies'
 import './App.css'
 
 function App() {
@@ -10,11 +12,20 @@ function App() {
     <>
       <Navbar />
 
-      {currentPath === '/' && <Hero />}
+      {currentPath === '/' && (
+        <>
+          <Hero />
+          <RecommendedMovies />
+        </>
+      )}
 
       {currentPath === '/elokuvat' && <MovieSearch />}
 
-      {currentPath === '/ryhmat' && <h1>Ryhmät</h1>}
+      {currentPath === '/ryhmat' && (
+        <>
+          <GroupHero />
+        </>
+      )}
     </>
   )
 }

@@ -5,7 +5,22 @@ import searchIcon from '../assets/icons/search.svg'
 import gearIcon from '../assets/icons/gear.svg'
 import personIcon from '../assets/icons/person-circle.svg'
 
+import { useState } from 'react'
+
+
 function Navbar() {
+  const [searchQuery, setSearchQuery] = useState('')
+
+  function handleSearch(event) {
+    event.preventDefault()
+
+    const query = searchQuery.trim()
+
+    if (!query) return
+
+    window.location.href = `/elokuvat?query=${encodeURIComponent(query)}`
+  }
+
   return (
     <nav className="navbar">
 
@@ -28,20 +43,22 @@ function Navbar() {
         </a>
 
         <a href="/elokuvat" className="nav-link">
-        <img src={filmIcon} alt="" />
+          <img src={filmIcon} alt="" />
           Elokuvat
         </a>
       </div>
 
-      {/* Search bar | TODO */}
-      <div className="navbar-search">
+      {/* Search bar */}
+      <form className="navbar-search" onSubmit={handleSearch}>
         <img src={searchIcon} alt="" />
 
         <input
           type="text"
           placeholder="Hae elokuvia tai ryhmiä..."
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
         />
-      </div>
+      </form>
 
       {/* Asetukset ja profiili | TODO */}
       <div className="navbar-actions">
