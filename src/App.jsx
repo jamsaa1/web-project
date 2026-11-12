@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import GroupHero from './components/GroupHero'
 import MovieSearch from './components/MovieSearch'
 import RecommendedMovies from './components/RecommendedMovies'
+import ProfilePage from './components/ProfilePage'
 import './App.css'
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
           <GroupHero />
         </>
       )}
+
+      { currentPath === '/profiili' && <ProfilePage /> }
     </>
   )
 }

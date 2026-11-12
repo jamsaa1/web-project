@@ -8,6 +8,7 @@ import personIcon from '../assets/icons/person-circle.svg'
 import { useState } from 'react'
 
 
+
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -20,6 +21,8 @@ function Navbar() {
 
     window.location.href = `/elokuvat?query=${encodeURIComponent(query)}`
   }
+
+  const currentPath = window.location.pathname  
 
   return (
     <nav className="navbar">
@@ -66,9 +69,18 @@ function Navbar() {
           <img src={gearIcon} alt="" />
         </button>
 
-        <button aria-label="Käyttäjäprofiili">
+        {/* <button 
+          aria-label="Käyttäjäprofiili"
+          onClick={ () => currentPath = '/profiili'}
+        >
           <img src={personIcon} alt="" />
-        </button>
+        </button> */} 
+
+        <a 
+          href="/profiili" className="nav-link">
+          <img src={personIcon} alt="" />
+        </a>
+
       </div>
 
     </nav>
