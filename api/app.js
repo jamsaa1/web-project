@@ -6,6 +6,7 @@ import cors from "cors";
 import errorHandler from "./middleware/errorHandler.js";
 import testRouter from "./routes/testRouter.js";
 import movieRouter from "./routes/movieRouter.js";
+import authRouter from "./routes/authRouter.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use("/api/tests", testRouter);
 
 // Register TMDB movie routes.
 app.use("/api/movies", movieRouter);
+app.use("/api/auth", authRouter);
 
 // Health check endpoint for database connectivity
 app.get("/api/health", async (req, res) => {

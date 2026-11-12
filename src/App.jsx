@@ -1,9 +1,11 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 import MovieSearch from "./components/MovieSearch";
+import MovieDetails from "./MovieDetails";
 
-function App() {
+function Home() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,7 +48,7 @@ function App() {
             <ul style={{ textAlign: "left", margin: "10px 0" }}>
               {data.map((item) => (
                 <li key={item.id} style={{ marginBottom: "10px" }}>
-                  {`ID: ${item.id} - ${item.description}`}
+                  {`ID: ${item.id} ${item.description}`}
                 </li>
               ))}
             </ul>
@@ -71,4 +73,13 @@ function App() {
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/movies/:id" element={<MovieDetails />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
