@@ -6,6 +6,7 @@ import cors from "cors";
 import errorHandler from "./middleware/errorHandler.js";
 import testRouter from "./routes/testRouter.js";
 import movieRouter from "./routes/movieRouter.js";
+import reviewRouter from "./routes/reviewRouter.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/tests", testRouter);
+app.use("/api/reviews", reviewRouter);
 
 // Register TMDB movie routes.
 app.use("/api/movies", movieRouter);

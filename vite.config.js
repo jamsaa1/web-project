@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
- 
+
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: process.env.API_PROXY_TARGET || 'https://docker-sample-v12-hyaafnf0bnbdceg5.swedencentral-01.azurewebsites.net',
+        target: 'http://localhost:3000',
         changeOrigin: true
       }
     }
