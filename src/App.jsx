@@ -56,7 +56,7 @@ function App() {
 
       {currentPath === '/elokuvat' && <MovieSearch />}
 
-      {currentPath === '/elokuvat/1' && <MovieDetails/>}
+      {/^\/elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
 
       {currentPath === '/ryhmat' && (
         <GroupHero />

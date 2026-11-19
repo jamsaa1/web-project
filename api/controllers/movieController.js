@@ -121,3 +121,50 @@ export async function searchMovies(req, res) {
     });
   }
 }
+ 
+//Hakee yksittäisen elokuvan Tmdb:stä
+export async function getMovieDetails(req, res) {
+  try {
+    const { id } = req.params;
+
+    if (!/^\d+$/.test(id)) {
+      return res.status(400).json({
+        error: "Invalid movie ID",
+      });
+    }
+
+    const token = process.env.TMDB_READ_ACCESS_TOKEN;
+
+    if (!token) {
+      return res.status(500).json({
+        error: "TMDB API token is missing",
+      });
+    }
+
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}?language=en-US&append_to_response=credits`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          accept: "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return res.status(response.status === 404 ? 404 : 502).json({
+        error: "Unable to fetch movie details",
+      });
+    }
+
+    const data = await response.json();
+
+    return res.json(data);
+  } catch (error) {
+    console.error("TMDB movie details error:", error);
+
+    return res.status(502).json({
+      error: "Unable to fetch movie details",
+    });
+  }
+}
