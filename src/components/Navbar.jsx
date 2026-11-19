@@ -1,3 +1,4 @@
+
 import houseIcon from '../assets/icons/house-door.svg'
 import chatIcon from '../assets/icons/chat-left.svg'
 import filmIcon from '../assets/icons/film.svg'
@@ -9,7 +10,7 @@ import { useState } from 'react'
 
 
 
-function Navbar() {
+function Navbar({ user }) {
   const [searchQuery, setSearchQuery] = useState('')
 
   function handleSearch(event) {
@@ -79,6 +80,10 @@ function Navbar() {
         <a 
           href="/profiili" className="nav-link">
           <img src={personIcon} alt="" />
+
+          {user && (
+            <span>{user.name}</span>
+          )}
         </a>
 
       </div>
