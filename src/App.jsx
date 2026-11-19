@@ -8,8 +8,9 @@ import MovieSearch from './components/MovieSearch'
 import RecommendedMovies from './components/RecommendedMovies'
 import ProfilePage from './components/profileComponents/ProfilePage'
 import Register from './components/profileComponents/Register'
-import Login from './components/Login'
-import Logout from './components/Logout'
+import Login from './components/profileComponents/Login'
+import Logout from './components/profileComponents/Logout'
+import MovieDetails from './components/MovieDetails'
 import './App.css'
 
 function App() {
@@ -54,6 +55,8 @@ function App() {
       )}
 
       {currentPath === '/elokuvat' && <MovieSearch />}
+
+      {currentPath === '/elokuvat/1' && <MovieDetails/>}
 
       {currentPath === '/ryhmat' && (
         <GroupHero />
