@@ -7,9 +7,6 @@ import {
   getRecentReviews,
 } from "../models/reviewModel.js";
 
-// väliaikainen dev user
-const DEV_USER_ID = Number(process.env.DEV_USER_ID);
-
 // arvostelun tarkistus
 function isValidRating(stars) {
   return (
@@ -51,9 +48,9 @@ export async function addReview(req, res) {
       return res.status(400).json({ error: "Arvosteluteksti on liian pitkä" });
     }
 
-    if (!Number.isInteger(DEV_USER_ID) || DEV_USER_ID <= 0) {
-      return res.status(500).json({
-        error: "Dev käyttäjän ID:tä ei ole määritelty",
+    if (!req.session.userId) {
+      return res.status(401).json({
+        error: "Kirjaudu sisään arvostellaksesi elokuvan",
       });
     }
 
@@ -64,7 +61,7 @@ export async function addReview(req, res) {
     );
 
     const review = await createReview(
-      DEV_USER_ID,
+      req.session.userId,
       movieId,
       stars,
       reviewText?.trim() || null
@@ -107,7 +104,7 @@ export async function getMovieReviews(req, res) {
   }
 }
 
-// PUT: päivitetään dev userin arvostelu
+// PUT: päivitetään käyttäjän arvostelu
 export async function editReview(req, res) {
   try {
     const tmdbId = Number(req.params.tmdbId);
@@ -135,9 +132,9 @@ export async function editReview(req, res) {
       return res.status(400).json({ error: "Arvosteluteksti on liian pitkä" });
     }
 
-    if (!Number.isInteger(DEV_USER_ID) || DEV_USER_ID <= 0) {
-      return res.status(500).json({
-        error: "Dev käyttäjän ID:tä ei ole määritelty",
+    if (!req.session.userId) {
+      return res.status(401).json({
+        error: "Kirjaudu sisään muokataksesi arvostelua",
       });
     }
 
@@ -148,7 +145,7 @@ export async function editReview(req, res) {
     }
 
     const review = await updateReview(
-      DEV_USER_ID,
+      req.session.userId,
       movieId,
       stars,
       reviewText?.trim() || null
