@@ -21,12 +21,18 @@ function Hero() {
       </div>
 
       <div className="hero-buttons">
-        <button className="hero-button primary">
+        <button
+          className="hero-button primary"
+          onClick={() => window.location.href = '/elokuvat'}
+        >
           Selaa elokuvia
           <img src={arrowIcon} alt="" />
         </button>
 
-        <button className="hero-button secondary">
+        <button
+          className="hero-button secondary"
+          onClick={() => window.location.href = '/ryhmat'}
+        >
           Liity ryhmiin
           <img src={peopleIcon} alt="" />
         </button>

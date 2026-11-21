@@ -1,0 +1,19 @@
+#Otsikko {
+    width: 80%;
+    margin: 50px;
+    padding: 10px;
+    font-size: 40px;
+}
+
+.toimintoNapit {
+    width: 50%;
+    margin: 50px;
+}
+
+button {
+    margin: 10px;
+}
+
+a {
+    color: black;
+}
