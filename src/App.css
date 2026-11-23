@@ -471,3 +471,34 @@ html {
   padding: 15px;
   box-sizing: border-box;
 }
+
+
+/* Global page layout: footer stays at the bottom */
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+}
+
+.app-main {
+  flex: 1 0 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+.moviety-footer {
+  margin-top: auto;
+}

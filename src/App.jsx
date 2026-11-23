@@ -4,7 +4,6 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import GroupHero from "./components/GroupHero";
 import MovieSearch from "./components/MovieSearch";
-import AdvancedSearch from "./components/AdvancedSearch";
 import RecommendedMovies from "./components/RecommendedMovies";
 import RecentReviews from "./components/RecentReviews";
 import ProfilePage from "./components/profileComponents/ProfilePage";
@@ -12,6 +11,8 @@ import Register from "./components/profileComponents/Register";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import MovieDetails from "./components/MovieDetails";
+import Footer from "./components/Footer";
+
 import "./App.css";
 
 function App() {
@@ -45,59 +46,61 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className="app-layout">
       <Navbar user={user} />
 
-      {currentPath === "/" && (
-        <>
-          <Hero />
+      <main className="app-main">
+        {currentPath === "/" && (
+          <>
+            <Hero />
 
-          <main className="home-layout">
-            <div className="home-main">
-              <RecommendedMovies />
-              {/* omat listat tähän myöhemmin */}
+            <div className="home-layout">
+              <div className="home-main">
+                <RecommendedMovies />
+                {/* omat listat tähän myöhemmin */}
+              </div>
+
+              <aside className="home-sidebar">
+                <RecentReviews />
+                {/* aktiiviset ryhmät tähän myöhemmin */}
+              </aside>
             </div>
+          </>
+        )}
 
-            <aside className="home-sidebar">
-              <RecentReviews />
-              {/* aktiiviset ryhmät tähän myöhemmin */}
-            </aside>
-          </main>
-        </>
-      )}
-
-      {currentPath === "/elokuvat" && (
-        <>
+        {currentPath === "/elokuvat" && (
           <MovieSearch
             initialQuery={
               new URLSearchParams(window.location.search).get("query") || ""
             }
           />
-        </>
-      )}
+        )}
 
-      {/^\/elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
+        {/^\/*elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
 
-      {currentPath === "/ryhmat" && <GroupHero />}
+        {currentPath === "/ryhmat" && <GroupHero />}
 
-      {currentPath === "/profiili" && !checkingLogin && (
-        <ProfilePage user={user} />
-      )}
+        {currentPath === "/profiili" && !checkingLogin && (
+          <ProfilePage user={user} />
+        )}
 
-      {currentPath === "/profiili/rekisteroidy" && <Register />}
+        {currentPath === "/profiili/rekisteroidy" && <Register />}
 
-      {currentPath === "/kirjaudu" &&
-        !checkingLogin &&
-        (user ? (
-          <>
-            <h2>Olet kirjautunut sisään!</h2>
-            <p>Tervetuloa, {user.name}!</p>
-            <Logout />
-          </>
-        ) : (
-          <Login />
-        ))}
-    </>
+        {currentPath === "/kirjaudu" &&
+          !checkingLogin &&
+          (user ? (
+            <>
+              <h2>Olet kirjautunut sisään!</h2>
+              <p>Tervetuloa, {user.name}!</p>
+              <Logout />
+            </>
+          ) : (
+            <Login />
+          ))}
+      </main>
+
+      <Footer />
+    </div>
   );
 }
 
