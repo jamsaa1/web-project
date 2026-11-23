@@ -1,3 +1,4 @@
+
 import houseIcon from '../assets/icons/house-door.svg'
 import chatIcon from '../assets/icons/chat-left.svg'
 import filmIcon from '../assets/icons/film.svg'
@@ -8,7 +9,8 @@ import personIcon from '../assets/icons/person-circle.svg'
 import { useState } from 'react'
 
 
-function Navbar() {
+
+function Navbar({ user }) {
   const [searchQuery, setSearchQuery] = useState('')
 
   function handleSearch(event) {
@@ -20,6 +22,8 @@ function Navbar() {
 
     window.location.href = `/elokuvat?query=${encodeURIComponent(query)}`
   }
+
+  const currentPath = window.location.pathname  
 
   return (
     <nav className="navbar">
@@ -66,9 +70,22 @@ function Navbar() {
           <img src={gearIcon} alt="" />
         </button>
 
-        <button aria-label="Käyttäjäprofiili">
+        {/* <button 
+          aria-label="Käyttäjäprofiili"
+          onClick={ () => currentPath = '/profiili'}
+        >
           <img src={personIcon} alt="" />
-        </button>
+        </button> */} 
+
+        <a 
+          href="/profiili" className="nav-link">
+          <img src={personIcon} alt="" />
+
+          {user && (
+            <span>{user.name}</span>
+          )}
+        </a>
+
       </div>
 
     </nav>
