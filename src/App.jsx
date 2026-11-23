@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import GroupHero from './components/GroupHero'
 import MovieSearch from './components/MovieSearch'
+import AdvancedSearch from './components/AdvancedSearch'
 import RecommendedMovies from './components/RecommendedMovies'
 import RecentReviews from './components/RecentReviews'
 import ProfilePage from './components/profileComponents/ProfilePage'
@@ -23,7 +24,7 @@ function App() {
     async function checkLogin() {
       try {
         const response = await fetch('/api/auth/me', {
-          credentials: 'include'
+          credentials: 'include',
         })
 
         if (response.ok) {
@@ -65,13 +66,16 @@ function App() {
         </>
       )}
 
-      {currentPath === '/elokuvat' && <MovieSearch />}
+      {currentPath === '/elokuvat' && (
+        <>
+          <MovieSearch />
+          <AdvancedSearch />
+        </>
+      )}
 
       {/^\/elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
 
-      {currentPath === '/ryhmat' && (
-        <GroupHero />
-      )}
+      {currentPath === '/ryhmat' && <GroupHero />}
 
       {currentPath === '/profiili' && !checkingLogin && (
         <ProfilePage user={user} />
@@ -79,20 +83,16 @@ function App() {
 
       {currentPath === '/profiili/rekisteroidy' && <Register />}
 
-      {currentPath === '/kirjaudu' && (
-        <>
-          {!checkingLogin && (
-            user ? (
-              <>
-                <h2>Olet kirjautunut sisään!</h2>
-                <p>Tervetuloa, {user.name}!</p>
-                <Logout />
-              </>
-            ) : (
-              <Login />
-            )
-          )}
-        </>
+      {currentPath === '/kirjaudu' && !checkingLogin && (
+        user ? (
+          <>
+            <h2>Olet kirjautunut sisään!</h2>
+            <p>Tervetuloa, {user.name}!</p>
+            <Logout />
+          </>
+        ) : (
+          <Login />
+        )
       )}
     </>
   )
