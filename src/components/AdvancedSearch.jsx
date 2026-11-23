@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Range, getTrackBackground } from "react-range";
 import "./AdvancedSearch.css";
@@ -104,11 +105,6 @@ function AdvancedSearch() {
             <span>{MIN_YEAR}</span>
             <span>{MAX_YEAR}</span>
           </div>
-
-          {/* Displays the currently selected year range. */}
-          <p className="selected-years">
-            Selected years: {years[0]} - {years[1]}
-          </p>
 
           {/* Input for searching movies by actor's name. */}
           <label htmlFor="actor">Actor:</label>

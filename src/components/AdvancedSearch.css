@@ -1,12 +1,43 @@
 
+/* ========================================
+   ADVANCED SEARCH - MOVIETY
+======================================== */
+
 /* Main container for advanced search */
 .advanced-search {
-    margin-top: 15px;
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto 32px;
+    text-align: center;
+    box-sizing: border-box;
   }
   
   /* Button that opens the advanced search panel */
   .advanced-search-toggle {
+    display: block;
+    margin: 0 auto;
+  
+    padding: 10px 20px;
+    background-color: #23666c;
+    color: white;
+  
+    border: none;
+    border-radius: 8px;
+  
+    font-size: 14px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Hover effect */
+  .advanced-search-toggle:hover {
+    background-color: #194f54;
+  }
+  
+  /* Keyboard accessibility */
+  .advanced-search-toggle:focus-visible {
+    outline: 2px solid #a97435;
+    outline-offset: 3px;
   }
   
   /* Container for all advanced search filters */
@@ -14,9 +45,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  
+    width: 100%;
+    box-sizing: border-box;
+  
     gap: 15px;
     margin-top: 20px;
     padding: 20px;
+  
+    background-color: rgba(35, 102, 108, 0.06);
+    border: 1px solid rgba(35, 102, 108, 0.2);
+    border-radius: 10px;
   }
   
   /* Container for the dual range slider */
@@ -40,33 +79,76 @@
     width: 20px;
     border-radius: 50%;
     background-color: #fff;
-    border: 3px solid #1684dd;
+    border: 3px solid #23666c;
     box-sizing: border-box;
     cursor: grab;
+  }
+  
+  .year-range-thumb:active {
+    cursor: grabbing;
   }
   
   /* Minimum and maximum available years */
   .year-range-labels {
     display: flex;
     justify-content: space-between;
+  
     width: 300px;
     max-width: 100%;
+  
     font-size: 12px;
-    color: #888;
+    color: #777;
   }
   
   /* Displays the selected release years */
   .selected-years {
     font-weight: bold;
     font-size: 16px;
-    color: #1684dd;
+    color: #23666c;
   }
   
   /* Actor search field */
   .advanced-search-actor {
     width: 280px;
     max-width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
+  
     box-sizing: border-box;
+  
+    border: 1px solid #bbb;
+    border-radius: 8px;
+  
+    font-size: 14px;
+    background-color: white;
+    color: #251f18;
+  }
+  
+  .advanced-search-actor:focus {
+    outline: 2px solid #23666c;
+    outline-offset: 1px;
+  }
+  
+  /* Responsive layout for mobile */
+  @media (max-width: 600px) {
+    .advanced-search {
+      max-width: 100%;
+      padding: 0 10px;
+    }
+  
+    .advanced-search-panel {
+      padding: 15px 10px;
+    }
+  
+    .year-range-container {
+      width: 100%;
+    }
+  
+    .year-range-labels {
+      width: 100%;
+    }
+  
+    .advanced-search-actor {
+      width: 100%;
+    }
   }
   
