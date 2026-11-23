@@ -12,7 +12,7 @@ import Login from "./components/Login";
 import Logout from "./components/Logout";
 import MovieDetails from "./components/MovieDetails";
 import Footer from "./components/Footer";
-
+import AboutUs from "./components/AboutUs";
 import "./App.css";
 
 function App() {
@@ -76,7 +76,7 @@ function App() {
           />
         )}
 
-        {/^\/*elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
+        {/^\/elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
 
         {currentPath === "/ryhmat" && <GroupHero />}
 
@@ -97,6 +97,7 @@ function App() {
           ) : (
             <Login />
           ))}
+        {currentPath === "/about-us" && <AboutUs />}
       </main>
 
       <Footer />

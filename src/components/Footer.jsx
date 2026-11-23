@@ -36,12 +36,13 @@ const footerSections = [
       { label: "Kirjaudu sisään", href: "/kirjaudu" },
     ],
   },
+
   {
     title: "Tuki",
     links: [
-      { label: "Tietoa meistä" },
-      { label: "Yhteystiedot" },
-      { label: "Ohjeet ja UKK" },
+      { label: "About Us", href: "/about-us" },
+      { label: "Contact" },
+      { label: "Help & FAQ" },
     ],
   },
   {
