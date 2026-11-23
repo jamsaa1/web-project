@@ -20,7 +20,7 @@ export async function getPopularMovies(req, res) {
     // Send a GET request to the TMDB API to retrieve popular movies.
     // The results are requested in English, from the first page.
     const response = await fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+      "https://api.themoviedb.org/3/movie/popular?language=fi-FI&page=1",
       {
         headers: {
           // Authenticate the request using the TMDB Bearer token.
@@ -45,7 +45,13 @@ export async function getPopularMovies(req, res) {
 
     // Send the array of popular movies back to the frontend.
     // Express automatically converts it into JSON.
-    return res.json(data.results);
+    const movies = await Promise.all(
+      (data.results ?? []).map((movie) =>
+        addEnglishFallback(movie, token)
+      )
+    );
+
+    return res.json(movies);
   } catch (error) {
     // Handle network errors or unexpected failures.
     // Log the error on the backend for debugging.
@@ -70,6 +76,44 @@ export async function getPopularMovies(req, res) {
 const MOVIES_PER_PAGE = 15;
 const MAX_PAGES = 100;
 const TMDB_PAGE_SIZE = 20;
+
+async function addEnglishFallback(movie, token) {
+  const needsTitle = !movie.title?.trim();
+  const needsOverview = !movie.overview?.trim();
+
+  if (!needsTitle && !needsOverview) {
+    return movie;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${movie.id}?language=en-US`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          accept: "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return movie;
+    }
+
+    const englishMovie = await response.json();
+
+    return {
+      ...movie,
+      title: needsTitle ? englishMovie.title || movie.title : movie.title,
+      overview: needsOverview
+        ? englishMovie.overview || movie.overview
+        : movie.overview,
+    };
+  } catch (error) {
+    console.error("English fallback error:", error);
+    return movie;
+  }
+}
 
 export async function searchMovies(req, res) {
   try {
@@ -120,7 +164,7 @@ export async function searchMovies(req, res) {
         const url = new URL("https://api.themoviedb.org/3/search/movie");
 
         url.searchParams.set("query", query.trim());
-        url.searchParams.set("language", "en-US");
+        url.searchParams.set("language", "fi-FI");
         url.searchParams.set("page", String(tmdbPage));
 
         return fetch(url, {
@@ -163,8 +207,12 @@ export async function searchMovies(req, res) {
     );
 
     // Return movie results and pagination information.
+    const moviesWithFallback = await Promise.all(
+      movies.map((movie) => addEnglishFallback(movie, token))
+    );
+
     return res.json({
-      results: movies,
+      results: moviesWithFallback,
       totalResults,
       totalPages,
       currentPage: requestedPage,
@@ -198,7 +246,7 @@ export async function getMovieDetails(req, res) {
     }
 
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}?language=en-US&append_to_response=credits`,
+      `https://api.themoviedb.org/3/movie/${id}?language=fi-FI&append_to_response=credits`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -214,8 +262,9 @@ export async function getMovieDetails(req, res) {
     }
 
     const data = await response.json();
+    const movie = await addEnglishFallback(data, token);
 
-    return res.json(data);
+    return res.json(movie);
   } catch (error) {
     console.error("TMDB movie details error:", error);
 
@@ -327,7 +376,7 @@ export async function discoverMovies(req, res) {
     function buildDiscoverUrl(tmdbPage) {
       const url = new URL("https://api.themoviedb.org/3/discover/movie");
 
-      url.searchParams.set("language", "en-US");
+      url.searchParams.set("language", "fi-FI");
       url.searchParams.set("page", String(tmdbPage));
       url.searchParams.set("sort_by", sort);
 
@@ -386,8 +435,12 @@ export async function discoverMovies(req, res) {
       MAX_PAGES
     );
 
+    const moviesWithFallback = await Promise.all(
+      movies.map((movie) => addEnglishFallback(movie, token))
+    );
+
     return res.json({
-      results: movies,
+      results: moviesWithFallback,
       totalResults,
       totalPages,
       currentPage: page,
