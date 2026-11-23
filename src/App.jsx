@@ -1,15 +1,16 @@
-
 import { useEffect, useState } from 'react'
 
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import GroupHero from './components/GroupHero'
 import MovieSearch from './components/MovieSearch'
+import AdvancedSearch from './components/AdvancedSearch'
 import RecommendedMovies from './components/RecommendedMovies'
+import RecentReviews from './components/RecentReviews'
 import ProfilePage from './components/profileComponents/ProfilePage'
 import Register from './components/profileComponents/Register'
-import Login from './components/profileComponents/Login'
-import Logout from './components/profileComponents/Logout'
+import Login from './components/Login'
+import Logout from './components/Logout'
 import MovieDetails from './components/MovieDetails'
 import './App.css'
 
@@ -23,7 +24,7 @@ function App() {
     async function checkLogin() {
       try {
         const response = await fetch('/api/auth/me', {
-          credentials: 'include'
+          credentials: 'include',
         })
 
         if (response.ok) {
@@ -50,38 +51,48 @@ function App() {
       {currentPath === '/' && (
         <>
           <Hero />
-          <RecommendedMovies />
+
+          <main className="home-layout">
+            <div className="home-main">
+              <RecommendedMovies />
+              {/* omat listat tähän myöhemmin */}
+            </div>
+
+            <aside className="home-sidebar">
+              <RecentReviews />
+              {/* aktiiviset ryhmät tähän myöhemmin */}
+            </aside>
+          </main>
         </>
       )}
 
-      {currentPath === '/elokuvat' && <MovieSearch />}
+      {currentPath === '/elokuvat' && (
+        <>
+          <MovieSearch />
+          <AdvancedSearch />
+        </>
+      )}
 
       {/^\/elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
 
-      {currentPath === '/ryhmat' && (
-        <GroupHero />
-      )}
+      {currentPath === '/ryhmat' && <GroupHero />}
 
       {currentPath === '/profiili' && !checkingLogin && (
-      <ProfilePage user={user} />
-         )}
+        <ProfilePage user={user} />
+      )}
 
       {currentPath === '/profiili/rekisteroidy' && <Register />}
 
-      {currentPath === '/kirjaudu' && (
-        <>
-          {!checkingLogin && (
-            user ? (
-              <>
-                <h2>Olet kirjautunut sisään!</h2>
-                <p>Tervetuloa, {user.name}!</p>
-                <Logout />
-              </>
-            ) : (
-              <Login />
-            )
-          )}
-        </>
+      {currentPath === '/kirjaudu' && !checkingLogin && (
+        user ? (
+          <>
+            <h2>Olet kirjautunut sisään!</h2>
+            <p>Tervetuloa, {user.name}!</p>
+            <Logout />
+          </>
+        ) : (
+          <Login />
+        )
       )}
     </>
   )

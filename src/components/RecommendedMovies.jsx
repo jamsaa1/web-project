@@ -41,7 +41,12 @@ function RecommendedMovies() {
 
       <div className="recommended-movies-list">
         {movies.map((movie) => (
-          <article className="recommended-movie" key={movie.id}>
+          <article
+            className="recommended-movie"
+            key={movie.id}
+            onClick={() => window.location.href = `/elokuvat/${movie.id}`}
+            style={{ cursor: 'pointer' }}
+          >
             {movie.poster_path && (
               <img
                 src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}

@@ -6,6 +6,7 @@ import cors from "cors";
 import errorHandler from "./middleware/errorHandler.js";
 import testRouter from "./routes/testRouter.js";
 import movieRouter from "./routes/movieRouter.js";
+import reviewRouter from "./routes/reviewRouter.js";
 import authRouter from "./routes/authRouter.js";
 import { pool } from './models/db.js'
 import session from 'express-session'
@@ -50,11 +51,12 @@ app.use(session({
 
 
 app.use("/api/tests", testRouter);
+app.use("/api/reviews", reviewRouter);
 
 app.use("/api/auth", authRouter);
 
 
-// Register TMDB movie routes.
+ // Register TMDB movie routes.
 app.use("/api/movies", movieRouter);
 
 // Health check endpoint for database connectivity

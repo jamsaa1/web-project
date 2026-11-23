@@ -240,3 +240,33 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
+
+/* etusivu layout */
+
+.home-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.3fr) minmax(280px, 1fr);
+  gap: 40px;
+
+  width: 100%;
+  padding: 20px 24px 50px;
+
+  background-color: var(--color-background);
+}
+
+.home-main {
+  min-width: 0;
+}
+
+.home-sidebar {
+  min-width: 0;
+}
+
+/* mobiili layout */
+
+@media (max-width: 850px) {
+  .home-layout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
