@@ -10,7 +10,7 @@ export default defineConfig({
       "/api": {
         target:
           process.env.API_PROXY_TARGET ||
-          "https://docker-sample-v12-hyaafnf0bnbdceg5.swedencentral-01.azurewebsites.net",
+          "http://localhost:3000",
         changeOrigin: true,
       },
     },

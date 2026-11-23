@@ -15,24 +15,24 @@ export const DEFAULT_FILTERS = {
 };
 
 const GENRES = [
-  { id: 28, name: "Action" },
-  { id: 12, name: "Adventure" },
-  { id: 16, name: "Animation" },
-  { id: 35, name: "Comedy" },
-  { id: 80, name: "Crime" },
-  { id: 99, name: "Documentary" },
-  { id: 18, name: "Drama" },
-  { id: 10751, name: "Family" },
-  { id: 14, name: "Fantasy" },
-  { id: 36, name: "History" },
-  { id: 27, name: "Horror" },
-  { id: 10402, name: "Music" },
-  { id: 9648, name: "Mystery" },
-  { id: 10749, name: "Romance" },
-  { id: 878, name: "Science Fiction" },
-  { id: 53, name: "Thriller" },
-  { id: 10752, name: "War" },
-  { id: 37, name: "Western" },
+  { id: 28, name: "Toiminta" },
+  { id: 12, name: "Seikkailu" },
+  { id: 16, name: "Animaatio" },
+  { id: 35, name: "Komedia" },
+  { id: 80, name: "Rikos" },
+  { id: 99, name: "Dokumentti" },
+  { id: 18, name: "Draama" },
+  { id: 10751, name: "Perhe" },
+  { id: 14, name: "Fantasia" },
+  { id: 36, name: "Historia" },
+  { id: 27, name: "Kauhu" },
+  { id: 10402, name: "Musiikki" },
+  { id: 9648, name: "Mysteeri" },
+  { id: 10749, name: "Romanssi" },
+  { id: 878, name: "Scifi" },
+  { id: 53, name: "Jännitys" },
+  { id: 10752, name: "Sota" },
+  { id: 37, name: "Lännenelokuva" },
 ];
 
 function AdvancedSearch({ filters, onFiltersChange }) {
@@ -69,18 +69,18 @@ function AdvancedSearch({ filters, onFiltersChange }) {
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
-        Advanced Search {isOpen ? "▲" : "▼"}
+        Suodattimet {isOpen ? "▲" : "▼"}
       </button>
 
       {isOpen && (
         <div className="advanced-search-panel">
 
-          <h3>Filter Movies</h3>
+          <h3>Suodata elokuvia</h3>
 
           {/* RELEASE YEARS */}
           <div className="filter-section">
             <label>
-              Release year: {filters.years[0]} - {filters.years[1]}
+              Julkaisuvuosi: {filters.years[0]} - {filters.years[1]}
             </label>
 
             <div className="year-range-container">
@@ -141,8 +141,8 @@ function AdvancedSearch({ filters, onFiltersChange }) {
 
           {/* GENRES */}
           <div className="filter-section">
-            <h4>Genres</h4>
-            <p>Select one or more genres</p>
+            <h4>Genret</h4>
+            <p>Valitse yksi tai useampi</p>
 
             <div className="genre-options">
               {GENRES.map((genre) => (
@@ -164,14 +164,14 @@ function AdvancedSearch({ filters, onFiltersChange }) {
           {/* ACTOR */}
           <div className="filter-section">
             <label htmlFor="actor">
-              Actor / Actress
+              Näyttelijä
             </label>
 
             <input
               id="actor"
               className="advanced-search-actor"
               type="text"
-              placeholder="e.g. Leonardo DiCaprio"
+              placeholder="esim. Leonardo DiCaprio"
               value={filters.actor}
               onChange={(event) =>
                 updateFilter("actor", event.target.value)
@@ -182,7 +182,7 @@ function AdvancedSearch({ filters, onFiltersChange }) {
           {/* RATING */}
           <div className="filter-section">
             <label htmlFor="minimum-rating">
-              Minimum rating: {filters.rating}/10
+              Minimi arvosana: {filters.rating}/10
             </label>
 
             <input
@@ -204,7 +204,7 @@ function AdvancedSearch({ filters, onFiltersChange }) {
           {/* SORT */}
           <div className="filter-section">
             <label htmlFor="movie-sort">
-              Sort by
+              Järjestä
             </label>
 
             <select
@@ -215,16 +215,16 @@ function AdvancedSearch({ filters, onFiltersChange }) {
               }
             >
               <option value="popularity.desc">
-                Most popular
+                Suosituin
               </option>
               <option value="vote_average.desc">
-                Highest rated
+                Parhaiten arvioidut
               </option>
               <option value="primary_release_date.desc">
-                Newest first
+                Uusin ensin
               </option>
               <option value="primary_release_date.asc">
-                Oldest first
+                Vanhin ensin
               </option>
             </select>
           </div>
@@ -234,11 +234,11 @@ function AdvancedSearch({ filters, onFiltersChange }) {
             className="filter-reset"
             onClick={resetFilters}
           >
-            Reset Filters
+            Tyhjennä suodattimet
           </button>
 
           <p className="filter-hint">
-            Results update automatically.
+            Tulokset päivittyvät automaattisesti.
           </p>
         </div>
       )}

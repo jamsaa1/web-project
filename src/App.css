@@ -332,15 +332,25 @@ html {
   margin: 30px auto;
 }
 
-.movie-results article {
+.movie-results .movie-card {
+  display: block;
   min-width: 0;
   text-align: center;
+
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: transform 0.2s ease;
 }
 
-.movie-results article img {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
+.movie-results .movie-card:hover {
+  transform: translateY(-5px);
+}
+
+.movie-results .movie-card:focus-visible {
+  outline: 2px solid #23666c;
+  outline-offset: 4px;
   border-radius: 10px;
 }
 
@@ -352,7 +362,7 @@ html {
   text-decoration: none;
 }
 
-.movie-results .movie-title:hover {
+.movie-results .movie-card:hover .movie-title {
   text-decoration: underline;
 }
 

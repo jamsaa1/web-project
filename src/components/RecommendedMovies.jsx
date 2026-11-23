@@ -41,11 +41,11 @@ function RecommendedMovies() {
 
       <div className="recommended-movies-list">
         {movies.map((movie) => (
-          <article
+          <a
+            href={`/elokuvat/${movie.id}`}
             className="recommended-movie"
             key={movie.id}
-            onClick={() => window.location.href = `/elokuvat/${movie.id}`}
-            style={{ cursor: 'pointer' }}
+            aria-label={`Katso elokuvan ${movie.title} tiedot`}
           >
             {movie.poster_path && (
               <img
@@ -53,7 +53,7 @@ function RecommendedMovies() {
                 alt={movie.title}
               />
             )}
-          </article>
+          </a>
         ))}
       </div>
 
