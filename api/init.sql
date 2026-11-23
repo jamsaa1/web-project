@@ -22,3 +22,4 @@ WHERE
 COMMIT;
 
 \ir migrations/001_movie_core.sql
+\ir migrations/002_movie_reviews.sql

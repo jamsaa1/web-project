@@ -6,6 +6,11 @@ import cors from "cors";
 import errorHandler from "./middleware/errorHandler.js";
 import testRouter from "./routes/testRouter.js";
 import movieRouter from "./routes/movieRouter.js";
+import reviewRouter from "./routes/reviewRouter.js";
+import authRouter from "./routes/authRouter.js";
+import { pool } from './models/db.js'
+import session from 'express-session'
+import connectPgSimple from 'connect-pg-simple'
 
 const app = express();
 
@@ -16,9 +21,42 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/tests", testRouter);
+const PgSession = connectPgSimple(session);
 
-// Register TMDB movie routes.
+
+if (!process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET puuttuu')
+}
+
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1)
+}
+
+app.use(session({
+  store: new PgSession({
+    pool: pool,
+    createTableIfMissing: true
+  }),
+  name: 'moviety.sid',
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 1000 * 60 * 60 * 24
+  }
+}))
+
+
+app.use("/api/tests", testRouter);
+app.use("/api/reviews", reviewRouter);
+
+app.use("/api/auth", authRouter);
+
+
+ // Register TMDB movie routes.
 app.use("/api/movies", movieRouter);
 
 // Health check endpoint for database connectivity

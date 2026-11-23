@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-function MovieSearch() {
+
+function MovieSearch( ) {
   // Store the text entered by the user.
   const [query, setQuery] = useState("");
 
@@ -39,8 +40,13 @@ function MovieSearch() {
     }
   }
 
+  
+
   return (
+
+    
     <section>
+      
       <h2>Search Movies</h2>
 
       <form onSubmit={handleSearch}>
@@ -68,7 +74,8 @@ function MovieSearch() {
               />
             )}
 
-            <h3>{movie.title}</h3>
+            <br/>
+            <a href={`/elokuvat/${movie.id}`} className="movie-title">{movie.title}</a>
             <p>{movie.release_date?.slice(0, 4)}</p>
             <p>⭐ {movie.vote_average?.toFixed(1)}/10</p>
           </article>
