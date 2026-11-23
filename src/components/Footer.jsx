@@ -36,10 +36,11 @@ const footerSections = [
       { label: "Log In", href: "/kirjaudu" },
     ],
   },
+
   {
     title: "Support",
     links: [
-      { label: "About Us" },
+      { label: "About Us", href: "/about-us" },
       { label: "Contact" },
       { label: "Help & FAQ" },
     ],
