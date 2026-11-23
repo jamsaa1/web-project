@@ -169,19 +169,19 @@ function MovieSearch({ initialQuery = "" }) {
 
   return (
     <section className="movie-search">
-      <h2>Search Movies</h2>
+      <h2>Hae elokuvia</h2>
 
       {/* Title search */}
       <form className="movie-search-form" onSubmit={handleSearch}>
         <input
           type="text"
-          placeholder="Enter movie title..."
+          placeholder="Syötä elokuvan nimi..."
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
 
         <button type="submit" disabled={loading}>
-          Search
+          Hae
         </button>
       </form>
 
@@ -194,32 +194,37 @@ function MovieSearch({ initialQuery = "" }) {
       </div>
 
       {/* Status */}
-      {loading && <p>Searching...</p>}
+      {loading && <p>Haetaan...</p>}
 
       {error && <p className="movie-search-error">{error}</p>}
 
       {/* Results counter */}
       {!loading && !error && totalResults > 0 && (
         <div className="movie-results-header">
-          <h3>{activeQuery ? "Search Results" : "Discover Movies"}</h3>
+          <h3>{activeQuery ? "Hakutulokset" : "Löydä elokuvia"}</h3>
 
-          <p>{totalResults} movies found</p>
+          <p>{totalResults} elokuvaa löydetty</p>
 
           <span>
-            Showing {firstResult}–{lastResult} of {totalResults}
+            Näytetään {firstResult}–{lastResult} / {totalResults}
           </span>
         </div>
       )}
 
       {/* No results */}
       {!loading && !error && hasSearched && totalResults === 0 && (
-        <p className="movie-no-results">No movies found.</p>
+        <p className="movie-no-results">Elokuvia ei löytynyt.</p>
       )}
 
       {/* Movie grid */}
+
       <div className="movie-results">
         {movies.map((movie) => (
-          <article key={movie.id}>
+          <a
+            href={`/elokuvat/${movie.id}`}
+            key={movie.id}
+            className="movie-card"
+          >
             <div className="movie-poster">
               {movie.poster_path && (
                 <img
@@ -227,9 +232,7 @@ function MovieSearch({ initialQuery = "" }) {
                   alt={movie.title}
                   onError={(event) => {
                     event.currentTarget.style.display = "none";
-
-                    event.currentTarget.nextElementSibling.style.display =
-                      "flex";
+                    event.currentTarget.nextElementSibling.style.display = "flex";
                   }}
                 />
               )}
@@ -240,19 +243,17 @@ function MovieSearch({ initialQuery = "" }) {
                   display: movie.poster_path ? "none" : "flex",
                 }}
               >
-                <span>Picture Not Available</span>
+                <span>Kuva ei saatavilla</span>
               </div>
             </div>
 
-            <a href={`/elokuvat/${movie.id}`} className="movie-title">
-              {movie.title}
-            </a>
-
+            <h3 className="movie-title">{movie.title}</h3>
             <p>{movie.release_date?.slice(0, 4)}</p>
             <p>⭐ {movie.vote_average?.toFixed(1)}/10</p>
-          </article>
+          </a>
         ))}
       </div>
+
 
       {/* Pagination */}
       {!loading && !error && totalPages > 1 && (
@@ -263,7 +264,7 @@ function MovieSearch({ initialQuery = "" }) {
               disabled={currentPage === 1}
               onClick={() => changePage(currentPage - 1)}
             >
-              Previous
+              Edellinen
             </button>
 
             {visiblePages.map((page) => (
@@ -283,12 +284,12 @@ function MovieSearch({ initialQuery = "" }) {
               disabled={currentPage === totalPages}
               onClick={() => changePage(currentPage + 1)}
             >
-              Next
+              Seuraava
             </button>
           </nav>
 
           <p className="pagination-info">
-            Page {currentPage} of {totalPages}
+            Sivu {currentPage} / {totalPages}
           </p>
         </>
       )}
