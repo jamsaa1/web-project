@@ -224,3 +224,179 @@ export async function getMovieDetails(req, res) {
     });
   }
 }
+
+/**
+ * Discover and filter movies using TMDB.
+ * Returns 15 movies per Moviety page.
+ */
+export async function discoverMovies(req, res) {
+  try {
+    const token = process.env.TMDB_READ_ACCESS_TOKEN;
+
+    if (!token) {
+      return res.status(500).json({
+        error: "TMDB API token is missing",
+      });
+    }
+
+    const page = Number(req.query.page ?? 1);
+    const fromYear = Number(req.query.fromYear ?? 1888);
+    const toYear = Number(req.query.toYear ?? new Date().getFullYear());
+    const rating = Number(req.query.rating ?? 0);
+    const actor = String(req.query.actor ?? "").trim();
+    const genres = String(req.query.genres ?? "").trim();
+    const sort = String(req.query.sort ?? "popularity.desc");
+
+    const allowedSort = [
+      "popularity.desc",
+      "vote_average.desc",
+      "primary_release_date.desc",
+      "primary_release_date.asc",
+    ];
+
+    if (
+      !Number.isInteger(page) ||
+      page < 1 ||
+      page > MAX_PAGES ||
+      !Number.isInteger(fromYear) ||
+      !Number.isInteger(toYear) ||
+      fromYear < 1888 ||
+      fromYear > toYear ||
+      toYear > new Date().getFullYear() ||
+      !Number.isFinite(rating) ||
+      rating < 0 ||
+      rating > 10 ||
+      !allowedSort.includes(sort) ||
+      (genres !== "" && !/^\d+(,\d+)*$/.test(genres))
+    ) {
+      return res.status(400).json({
+        error: "Invalid search filters",
+      });
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      accept: "application/json",
+    };
+
+    // Look up the actor's TMDB ID.
+    let actorId = null;
+
+    if (actor) {
+      const actorUrl = new URL("https://api.themoviedb.org/3/search/person");
+
+      actorUrl.searchParams.set("query", actor);
+      actorUrl.searchParams.set("language", "en-US");
+
+      const actorResponse = await fetch(actorUrl, {
+        headers,
+      });
+
+      if (!actorResponse.ok) {
+        throw new Error("Unable to search actors");
+      }
+
+      const actorData = await actorResponse.json();
+
+      // First matching person in TMDB.
+      const matchedActor = actorData.results?.find(
+        (person) => person.known_for_department === "Acting"
+      );
+
+      if (!matchedActor) {
+        return res.json({
+          results: [],
+          totalResults: 0,
+          totalPages: 0,
+          currentPage: 1,
+        });
+      }
+
+      actorId = matchedActor.id;
+    }
+
+    // Convert Moviety page into TMDB pages.
+    const startIndex = (page - 1) * MOVIES_PER_PAGE;
+
+    const firstTmdbPage = Math.floor(startIndex / TMDB_PAGE_SIZE) + 1;
+
+    const lastTmdbPage =
+      Math.floor((startIndex + MOVIES_PER_PAGE - 1) / TMDB_PAGE_SIZE) + 1;
+
+    // Create a TMDB Discover URL with filters.
+    function buildDiscoverUrl(tmdbPage) {
+      const url = new URL("https://api.themoviedb.org/3/discover/movie");
+
+      url.searchParams.set("language", "en-US");
+      url.searchParams.set("page", String(tmdbPage));
+      url.searchParams.set("sort_by", sort);
+
+      // Release year range.
+      url.searchParams.set("primary_release_date.gte", `${fromYear}-01-01`);
+
+      url.searchParams.set("primary_release_date.lte", `${toYear}-12-31`);
+
+      // Minimum rating.
+      if (rating > 0) {
+        url.searchParams.set("vote_average.gte", String(rating));
+      }
+
+      // Multiple genres: OR matching.
+      if (genres) {
+        url.searchParams.set("with_genres", genres.split(",").join("|"));
+      }
+
+      // Actor.
+      if (actorId) {
+        url.searchParams.set("with_cast", String(actorId));
+      }
+
+      return url;
+    }
+
+    // Fetch the necessary TMDB pages.
+    const responses = await Promise.all(
+      Array.from(
+        {
+          length: lastTmdbPage - firstTmdbPage + 1,
+        },
+        (_, index) =>
+          fetch(buildDiscoverUrl(firstTmdbPage + index), { headers })
+      )
+    );
+
+    if (responses.some((response) => !response.ok)) {
+      throw new Error("TMDB discover request failed");
+    }
+
+    const pages = await Promise.all(
+      responses.map((response) => response.json())
+    );
+
+    const allMovies = pages.flatMap((item) => item.results ?? []);
+
+    const offset = startIndex % TMDB_PAGE_SIZE;
+
+    const movies = allMovies.slice(offset, offset + MOVIES_PER_PAGE);
+
+    const totalResults = pages[0]?.total_results ?? 0;
+
+    const totalPages = Math.min(
+      Math.ceil(totalResults / MOVIES_PER_PAGE),
+      MAX_PAGES
+    );
+
+    return res.json({
+      results: movies,
+      totalResults,
+      totalPages,
+      currentPage: page,
+    });
+  } catch (error) {
+    console.error("Discover movies error:", error);
+
+    return res.status(502).json({
+      error: "Unable to discover movies",
+    });
+  }
+}

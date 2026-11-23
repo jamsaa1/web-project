@@ -152,3 +152,84 @@
     }
   }
   
+
+
+/* Advanced filter sections */
+
+.filter-section {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+  }
+  
+  .filter-section h4,
+  .filter-section p {
+    margin: 0;
+  }
+  
+  .filter-section label {
+    font-weight: 600;
+  }
+  
+  .genre-options {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    text-align: left;
+  }
+  
+  .genre-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .genre-option input {
+    accent-color: #23666c;
+  }
+  
+  .filter-section input[type="range"] {
+    width: min(300px, 100%);
+    accent-color: #23666c;
+  }
+  
+  .filter-section select {
+    width: min(300px, 100%);
+    padding: 10px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    background-color: white;
+    color: #251f18;
+  }
+  
+  .filter-reset {
+    padding: 10px 20px;
+    border: 1px solid #23666c;
+    border-radius: 8px;
+    background: transparent;
+    color: #23666c;
+    cursor: pointer;
+  }
+  
+  .filter-reset:hover {
+    background: #e6f0f0;
+  }
+  
+  .filter-hint {
+    font-size: 12px;
+    color: #777;
+  }
+  
+  @media (max-width: 600px) {
+    .genre-options {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
