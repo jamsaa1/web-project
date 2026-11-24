@@ -1,137 +1,249 @@
+
 import { useState } from "react";
 import { Range, getTrackBackground } from "react-range";
 import "./AdvancedSearch.css";
 
-// Earliest year in cinema history.
 const MIN_YEAR = 1888;
-
-// Automatically gets the current year.
 const MAX_YEAR = new Date().getFullYear();
 
-// AdvancedSearch component allows users to filter movies
-// by release year and actor.
-function AdvancedSearch() {
-  // Controls whether the advanced search panel is visible.
-  // false = hidden, true = visible.
+export const DEFAULT_FILTERS = {
+  years: [MIN_YEAR, MAX_YEAR],
+  actor: "",
+  genres: [],
+  rating: 0,
+  sort: "popularity.desc",
+};
+
+const GENRES = [
+  { id: 28, name: "Action" },
+  { id: 12, name: "Adventure" },
+  { id: 16, name: "Animation" },
+  { id: 35, name: "Comedy" },
+  { id: 80, name: "Crime" },
+  { id: 99, name: "Documentary" },
+  { id: 18, name: "Drama" },
+  { id: 10751, name: "Family" },
+  { id: 14, name: "Fantasy" },
+  { id: 36, name: "History" },
+  { id: 27, name: "Horror" },
+  { id: 10402, name: "Music" },
+  { id: 9648, name: "Mystery" },
+  { id: 10749, name: "Romance" },
+  { id: 878, name: "Science Fiction" },
+  { id: 53, name: "Thriller" },
+  { id: 10752, name: "War" },
+  { id: 37, name: "Western" },
+];
+
+function AdvancedSearch({ filters, onFiltersChange }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Stores both selected years in one array.
-  // years[0] = earliest release year.
-  // years[1] = latest release year.
-  const [years, setYears] = useState([MIN_YEAR, MAX_YEAR]);
+  function updateFilter(name, value) {
+    onFiltersChange({
+      ...filters,
+      [name]: value,
+    });
+  }
 
-  // Stores the actor name entered by the user.
-  const [actor, setActor] = useState("");
+  function toggleGenre(id) {
+    const newGenres = filters.genres.includes(id)
+      ? filters.genres.filter((genre) => genre !== id)
+      : [...filters.genres, id];
+
+    updateFilter("genres", newGenres);
+  }
+
+  function resetFilters() {
+    onFiltersChange({
+      ...DEFAULT_FILTERS,
+      years: [...DEFAULT_FILTERS.years],
+      genres: [],
+    });
+  }
 
   return (
     <div className="advanced-search">
-      {/* Button that opens or closes the advanced search panel. */}
       <button
         type="button"
         className="advanced-search-toggle"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
       >
-        Advanced Search
+        Advanced Search {isOpen ? "▲" : "▼"}
       </button>
 
-      {/*
-        Conditional rendering:
-        The filters are displayed only when isOpen is true.
-      */}
       {isOpen && (
         <div className="advanced-search-panel">
-          {/* Title of the advanced search panel. */}
-          <h3>Advanced Search</h3>
 
-          {/* Displays the selected release year range. */}
-          <label>
-            Release year: {years[0]} - {years[1]}
-          </label>
+          <h3>Filter Movies</h3>
 
-          {/*
-            Dual range slider:
-            Allows users to select the earliest
-            and latest movie release year.
-          */}
-          <div className="year-range-container">
-            <Range
-              step={1}
-              min={MIN_YEAR}
-              max={MAX_YEAR}
-              values={years}
-              onChange={(values) => setYears(values)}
-              // Renders the slider track and selected range.
-              renderTrack={({ props, children }) => (
-                <div
-                  {...props}
-                  className="year-range-track"
-                  style={{
-                    ...props.style,
-                    background: getTrackBackground({
-                      values: years,
-                      colors: ["#ccc", "#1684dd", "#ccc"],
-                      min: MIN_YEAR,
-                      max: MAX_YEAR,
-                    }),
-                  }}
-                >
-                  {children}
-                </div>
-              )}
-              // Renders the two draggable slider handles.
-              renderThumb={({ props, index }) => {
-                const { key, ...thumbProps } = props;
+          {/* RELEASE YEARS */}
+          <div className="filter-section">
+            <label>
+              Release year: {filters.years[0]} - {filters.years[1]}
+            </label>
 
-                return (
+            <div className="year-range-container">
+              <Range
+                step={1}
+                min={MIN_YEAR}
+                max={MAX_YEAR}
+                values={filters.years}
+                onChange={(values) =>
+                  updateFilter("years", values)
+                }
+                renderTrack={({ props, children }) => (
                   <div
-                    key={key}
-                    {...thumbProps}
-                    className="year-range-thumb"
-                    aria-label={
-                      index === 0
-                        ? "Minimum release year"
-                        : "Maximum release year"
-                    }
-                    style={thumbProps.style}
+                    {...props}
+                    className="year-range-track"
+                    style={{
+                      ...props.style,
+                      background: getTrackBackground({
+                        values: filters.years,
+                        colors: [
+                          "#ccc",
+                          "#23666c",
+                          "#ccc",
+                        ],
+                        min: MIN_YEAR,
+                        max: MAX_YEAR,
+                      }),
+                    }}
+                  >
+                    {children}
+                  </div>
+                )}
+                renderThumb={({ props, index }) => {
+                  const { key, ...thumbProps } = props;
+
+                  return (
+                    <div
+                      key={key}
+                      {...thumbProps}
+                      className="year-range-thumb"
+                      aria-label={
+                        index === 0
+                          ? "Minimum release year"
+                          : "Maximum release year"
+                      }
+                      style={thumbProps.style}
+                    />
+                  );
+                }}
+              />
+            </div>
+
+            <div className="year-range-labels">
+              <span>{MIN_YEAR}</span>
+              <span>{MAX_YEAR}</span>
+            </div>
+          </div>
+
+          {/* GENRES */}
+          <div className="filter-section">
+            <h4>Genres</h4>
+            <p>Select one or more genres</p>
+
+            <div className="genre-options">
+              {GENRES.map((genre) => (
+                <label
+                  key={genre.id}
+                  className="genre-option"
+                >
+                  <input
+                    type="checkbox"
+                    checked={filters.genres.includes(genre.id)}
+                    onChange={() => toggleGenre(genre.id)}
                   />
-                );
-              }}
+                  {genre.name}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* ACTOR */}
+          <div className="filter-section">
+            <label htmlFor="actor">
+              Actor / Actress
+            </label>
+
+            <input
+              id="actor"
+              className="advanced-search-actor"
+              type="text"
+              placeholder="e.g. Leonardo DiCaprio"
+              value={filters.actor}
+              onChange={(event) =>
+                updateFilter("actor", event.target.value)
+              }
             />
           </div>
 
-          {/* Displays the minimum and maximum available years. */}
-          <div className="year-range-labels">
-            <span>{MIN_YEAR}</span>
-            <span>{MAX_YEAR}</span>
+          {/* RATING */}
+          <div className="filter-section">
+            <label htmlFor="minimum-rating">
+              Minimum rating: {filters.rating}/10
+            </label>
+
+            <input
+              id="minimum-rating"
+              type="range"
+              min="0"
+              max="10"
+              step="0.5"
+              value={filters.rating}
+              onChange={(event) =>
+                updateFilter(
+                  "rating",
+                  Number(event.target.value)
+                )
+              }
+            />
           </div>
 
-          {/* Displays the currently selected year range. */}
-          <p className="selected-years">
-            Selected years: {years[0]} - {years[1]}
+          {/* SORT */}
+          <div className="filter-section">
+            <label htmlFor="movie-sort">
+              Sort by
+            </label>
+
+            <select
+              id="movie-sort"
+              value={filters.sort}
+              onChange={(event) =>
+                updateFilter("sort", event.target.value)
+              }
+            >
+              <option value="popularity.desc">
+                Most popular
+              </option>
+              <option value="vote_average.desc">
+                Highest rated
+              </option>
+              <option value="primary_release_date.desc">
+                Newest first
+              </option>
+              <option value="primary_release_date.asc">
+                Oldest first
+              </option>
+            </select>
+          </div>
+
+          <button
+            type="button"
+            className="filter-reset"
+            onClick={resetFilters}
+          >
+            Reset Filters
+          </button>
+
+          <p className="filter-hint">
+            Results update automatically.
           </p>
-
-          {/* Input for searching movies by actor's name. */}
-          <label htmlFor="actor">Actor:</label>
-
-          <input
-            id="actor"
-            className="advanced-search-actor"
-            type="text"
-            placeholder="Actor name"
-            value={actor}
-            onChange={(e) => setActor(e.target.value)}
-          />
-
-          {/*
-            Search functionality will be implemented later
-            using the Express backend and TMDB API.
-          */}
-          <button type="button">Search Movies</button>
         </div>
       )}
     </div>
   );
 }
 
-// Export the component for use in App.jsx.
 export default AdvancedSearch;
