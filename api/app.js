@@ -8,9 +8,11 @@ import testRouter from "./routes/testRouter.js";
 import movieRouter from "./routes/movieRouter.js";
 import reviewRouter from "./routes/reviewRouter.js";
 import authRouter from "./routes/authRouter.js";
+import chatRouter from "./routes/chatRouter.js";
 import { pool } from './models/db.js'
 import session from 'express-session'
 import connectPgSimple from 'connect-pg-simple'
+
 
 const app = express();
 
@@ -54,6 +56,7 @@ app.use("/api/tests", testRouter);
 app.use("/api/reviews", reviewRouter);
 
 app.use("/api/auth", authRouter);
+app.use("/api/groups",chatRouter);
 
 
  // Register TMDB movie routes.
