@@ -1,9 +1,9 @@
+
 import { useEffect, useState } from 'react'
 
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import GroupHero from './components/GroupHero'
-import GroupChat from './components/GroupChat'
 import MovieSearch from './components/MovieSearch'
 import AdvancedSearch from './components/AdvancedSearch'
 import RecommendedMovies from './components/RecommendedMovies'
@@ -76,12 +76,7 @@ function App() {
 
       {/^\/elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
 
-      {currentPath === '/ryhmat' && (
-       <>
-      <GroupHero />
-      <GroupChat groupId={1} currentUserId={user?.id} />
-      </>
-      )}
+      {currentPath === '/ryhmat' && <GroupHero />}
 
       {currentPath === '/profiili' && !checkingLogin && (
         <ProfilePage user={user} />
