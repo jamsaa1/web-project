@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import GroupHero from "./components/GroupHero";
-import MovieSearch from "./components/MovieSearch";
-import RecommendedMovies from "./components/RecommendedMovies";
-import RecentReviews from "./components/RecentReviews";
 import ProfilePage from "./components/profileComponents/ProfilePage";
 import Register from "./components/profileComponents/Register";
-import Login from "./components/Login";
-import Logout from "./components/Logout";
+import RecommendedMovies from "./components/RecommendedMovies";
+import RecentReviews from "./components/RecentReviews";
 import MovieDetails from "./components/MovieDetails";
-import Footer from "./components/Footer";
+import MovieSearch from "./components/MovieSearch";
+import GroupHero from "./components/GroupHero";
 import AboutUs from "./components/AboutUs";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Logout from "./components/Logout";
+import Login from "./components/Login";
+import lists from "./components/Lists";
+import Hero from "./components/Hero";
 import "./App.css";
 
 function App() {
@@ -57,7 +58,8 @@ function App() {
             <div className="home-layout">
               <div className="home-main">
                 <RecommendedMovies />
-                {/* omat listat tähän myöhemmin */}
+                <br/>
+                <lists />miks tää ei näy D:
               </div>
 
               <aside className="home-sidebar">
