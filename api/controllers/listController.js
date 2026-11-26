@@ -4,8 +4,9 @@ import {
     addListItem,
     getList,
     updateList,
-    deleteList
-} from "../models/listModel";
+    deleteList,
+    deleteListItem
+} from "../models/listModel.js";
 
 // post; luo uusi lista
 export async function createList(req, res) {
@@ -26,7 +27,7 @@ export async function createList(req, res) {
 };
 
 // post; lisää elokuva listalle, item on elokuva
-export async function addListItem(req, res) {
+export async function addMovieToList(req, res) {
     const { id } = req.params;
     const { movieId } = req.body;
 
@@ -38,21 +39,22 @@ export async function addListItem(req, res) {
 };
 
 // get; hae julkista listaa
-export async function getList(req, res) {
-
+export async function findList(req, res) {
+    getList;
 };
 
 // put; muokkaa ja päivitä listaa
-export async function updateList(req, res) {
-  
+export async function editList(req, res) {
+    updateList;
 };
 
 // delete; poista lista
-export async function deleteList(req, res) {
-  
+export async function removeList(req, res) {    
+    deleteList;
 };
 
 // delete; poista elokuva listalta, item on elokuva
-export async function deleteListItem(req, res) {
-    
+export async function removeListItem(req, res) {
+    deleteListItem;
 };
+

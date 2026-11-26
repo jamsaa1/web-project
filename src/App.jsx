@@ -6,13 +6,13 @@ import RecommendedMovies from "./components/RecommendedMovies";
 import RecentReviews from "./components/RecentReviews";
 import MovieDetails from "./components/MovieDetails";
 import MovieSearch from "./components/MovieSearch";
+import RecentLists from "./components/recentLists";
 import GroupHero from "./components/GroupHero";
 import AboutUs from "./components/AboutUs";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Logout from "./components/Logout";
 import Login from "./components/Login";
-import lists from "./components/Lists";
 import Hero from "./components/Hero";
 import "./App.css";
 
@@ -58,14 +58,17 @@ function App() {
             <div className="home-layout">
               <div className="home-main">
                 <RecommendedMovies />
-                <br/>
-                <lists />miks tää ei näy D:
               </div>
-
+              
               <aside className="home-sidebar">
                 <RecentReviews />
                 {/* aktiiviset ryhmät tähän myöhemmin */}
               </aside>
+
+              <div className="home-main">
+                <RecentLists />
+              </div>
+
             </div>
           </>
         )}

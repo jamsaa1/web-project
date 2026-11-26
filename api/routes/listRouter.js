@@ -1,22 +1,22 @@
 import { Router } from "express";
 
-import { searchMovies } from '../controllers/movieController';
+import { searchMovies } from '../controllers/movieController.js';
 
-import { createList, getList, updateList, deleteList, addListItem, deleteListItem } from '../controllers/listController';
+import { createList, addMovieToList, findList, editList, removeList, removeListItem } from '../controllers/listController.js';
 
 const router = Router();
 
 router.post("/", createList);
 
-router.get("/:id", getList);
+router.get("/:id", findList);
 
-router.put("/:id", updateList);
+router.put("/:id", editList);
 
-router.delete("/:id", deleteList);
+router.delete("/:id", removeList);
 
-router.post("/:id/movies", addListItem);
+router.post("/:id/movies", addMovieToList);
 
-router.delete("/:id/movies/:movieId", deleteListItem);
+router.delete("/:id/movies/:movieId", removeListItem);
 
 router.get("/search", searchMovies);
 
