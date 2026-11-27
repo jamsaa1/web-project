@@ -40,7 +40,7 @@ const footerSections = [
   {
     title: "Tuki",
     links: [
-      { label: "About Us", href: "/about-us" },
+      { label: "Tietoa meistä", href: "/about-us" },
       { label: "Contact" },
       { label: "Help & FAQ" },
     ],

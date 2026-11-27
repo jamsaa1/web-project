@@ -1,7 +1,7 @@
-
 import React, { useEffect, useState } from "react";
+import ReviewSection from "./ReviewSection";
 
-export default function MovieDetails() {
+export default function MovieDetails({ user }) {
 
   const id = window.location.pathname.split("/")[2];
 
@@ -115,7 +115,7 @@ export default function MovieDetails() {
         backgroundColor: "#23666d",
         minHeight: "100vh",
         color: "#fff1d6",
-        fontFamily: "sans-serif",
+        fontFamily: "var(--font-body)",
       }}
     >
       {/* Kansikuva ja elokuvan perustiedot */}
@@ -257,6 +257,9 @@ export default function MovieDetails() {
             </p>
           </div>
         </div>
+
+        {/* arvostelut */}
+        <ReviewSection movie={movie} user={user} />
 
         {/* Takaisin-painike */}
         <div>

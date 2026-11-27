@@ -112,3 +112,25 @@ export async function getRecentReviews() {
 
   return result.rows;
 }
+
+// hakee kirjautuneen käyttäjän omat arvostelut
+export async function getMyReviews(userId) {
+  const result = await pool.query(
+    `SELECT
+       r.rating_id,
+       r.rating_starsnumber,
+       r.rating_text,
+       r.rating_created_at,
+       r.rating_updated_at,
+       m.tmdb_id,
+       m.movie_name,
+       m.movie_year
+     FROM ratings_db r
+     JOIN movies_db m ON r.movie_id = m.movie_id
+     WHERE r.user_id = $1
+     ORDER BY r.rating_created_at DESC`,
+    [userId]
+  );
+
+  return result.rows;
+}

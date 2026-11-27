@@ -29,14 +29,14 @@ const team = [
   {
     name: "Ella",
     initials: "E",
-    github: "",
-    linkedin: "https://github.com/kanelietana",
+    github: "https://github.com/kanelietana",
+    linkedin: "",
   },
   {
     name: "Jami",
     initials: "J",
-    github: "",
-    linkedin: "https://github.com/jamsaa1",
+    github: "https://github.com/jamsaa1",
+    linkedin: "",
   },
   {
     name: "Kaj",

@@ -1,19 +1,44 @@
 #Otsikko {
-    width: 80%;
-    margin: 50px;
-    padding: 10px;
-    font-size: 40px;
+  width: 80%;
+  margin: 50px;
+  padding: 10px;
+  font-size: 40px;
 }
 
 .toimintoNapit {
-    width: 50%;
-    margin: 50px;
+  width: 50%;
+  margin: 50px;
 }
 
 button {
-    margin: 10px;
+  margin: 10px;
 }
 
 a {
-    color: black;
+  color: black;
+}
+
+/* omat arvostelut */
+
+.my-reviews {
+  width: 48%;
+  margin-left: 50px;
+}
+
+.my-reviews h2 {
+  margin-bottom: 24px;
+}
+
+.my-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+@media (max-width: 650px) {
+  .my-reviews {
+    width: 100%;
+    margin-left: 0;
+  }
 }

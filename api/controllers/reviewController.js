@@ -5,6 +5,7 @@ import {
   getReviewsByMovie,
   updateReview,
   getRecentReviews,
+  getMyReviews,
 } from "../models/reviewModel.js";
 
 // arvostelun tarkistus
@@ -171,6 +172,27 @@ export async function getRecentMovieReviews(req, res) {
 
     return res.status(500).json({
       error: "Viimeisimpien arvostelujen hakeminen epäonnistui",
+    });
+  }
+}
+
+// GET: haetaan kirjautuneen käyttäjän omat arvostelut
+export async function getMyReviewsController(req, res) {
+  try {
+    if (!req.session.userId) {
+      return res.status(401).json({
+        error: "Kirjaudu sisään nähdäksesi omat arvostelusi",
+      });
+    }
+
+    const reviews = await getMyReviews(req.session.userId);
+
+    return res.json(reviews);
+  } catch (error) {
+    console.error("Get my reviews error:", error);
+
+    return res.status(500).json({
+      error: "Omien arvostelujen hakeminen epäonnistui",
     });
   }
 }

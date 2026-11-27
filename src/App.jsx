@@ -76,7 +76,9 @@ function App() {
           />
         )}
 
-        {/^\/elokuvat\/\d+$/.test(currentPath) && <MovieDetails />}
+        {/^\/elokuvat\/\d+$/.test(currentPath) && (
+          <MovieDetails user={user} />
+        )}
 
         {currentPath === "/ryhmat" && <GroupHero />}
 
